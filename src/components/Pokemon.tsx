@@ -44,12 +44,12 @@ to {transform: rotate(360deg)}
 
 const Pokemon = styled(({data, onFavorite, favorite, className}: PokeProps) => {
     const dexNumber = getDexNo(data);
-    const title = favorite ? "Unfavorite this Pokemon" : "Favorite this Pokemon";
+    const title = favorite ? "Unfavorite this Pokémon" : "Favorite this Pokémon";
     const imageUrl = `https://pokeres.bastionbot.org/images/pokemon/${dexNumber}.png`;
     const name = capitalize(correctPokemonName(data.name));
     return <div className={`pokemon ${className}`} role="listitem">
         <span className="pokemon--dexno">#{dexNumber}</span>
-        <img className="pokemon--image" src={imageUrl} alt={name} />
+        <img className="pokemon--image" title={name} src={imageUrl} alt={name} />
         <span className="pokemon--name">{name}</span>
         <span className="pokemon--favorite"><button className={favorite ? "set-unfavorite" : "set-favorite"} onClick={() => onFavorite(favorite)} title={title}>{favorite ? "★" : "☆"}</button></span>
     </div>

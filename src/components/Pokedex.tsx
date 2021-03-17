@@ -50,7 +50,7 @@ const Pokedex = styled((props: PokedexProps) => {
             setFavorites(favorites.filter(mon => mon !== poke.name));
         }
     }} />);
-    const errorMsg = error ? <span className="error">There was an error fetching Pokemon data. Please try again.</span> : null;
+    const errorMsg = error ? <span className="error">There was an error fetching Pokémon data. Please try again.</span> : null;
     return (<div className={`pokedex ${props.className}`} role="list">
         {dex}
         {errorMsg}

@@ -25,7 +25,7 @@ function App() {
         <div className="App">
             <h1>Pokédex</h1>
             <div>Sort by: <select onChange={(e) => setSort(e.target.value as sortType)}>
-                <option value="dex" selected={sort === "dex"}>PokeDex #</option>
+                <option value="dex" selected={sort === "dex"}>PokéDex #</option>
                 <option value="alpha" selected={sort === "alpha"}>Alphabetical</option>
             </select></div>
             <Pokedex sort={sort} favorites={favorites} />
