@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import styled from "styled-components";
 import {SimplePokemon, getDexNo} from "../types/simplepokemon";
 import type {PokedexResults} from "../types/pokedexresults";
 
@@ -6,7 +7,8 @@ import Pokemon from "./Pokemon";
 
 type PokedexProps = {
     sort?: "alpha"|"dex";
-    favorites: string[];
+    favorites?: string[];
+    className?: string;
 }
 
 const sortMethods = {
@@ -18,7 +20,7 @@ const sortMethods = {
     }
 }
 
-export default function Pokedex(props: PokedexProps) {
+const Pokedex = styled((props: PokedexProps) => {
     const [pokemon, setPokemon] = useState<PokedexResults>({
         count: 0,
         results: []
@@ -40,7 +42,14 @@ export default function Pokedex(props: PokedexProps) {
             setFavorites(favorites.filter(mon => mon !== poke.name));
         }
     }} />);
-    return (<div className="pokedex" role="list">
+    return (<div className={`pokedex ${props.className}`} role="list">
         {dex}
     </div>);
-}
+})`
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+padding: 2vh 10vw;
+`;
+
+export default Pokedex;

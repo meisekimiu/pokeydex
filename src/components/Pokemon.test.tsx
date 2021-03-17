@@ -46,4 +46,9 @@ describe('Pokemon component', () => {
         });
         expect(favorited).toBeFalsy();
     });
+    it('should include a picture', () => {
+        const image = screen.getByAltText("Oddish") as HTMLImageElement;
+        expect(image.src).toMatch("43.png");
+
+    });
 })
