@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
 
+import Pokedex from "./components/Pokedex";
+
+type sortType = "dex" | "alpha";
+
+function getStoredFavorites(): string[] {
+    if (localStorage.getItem("favorites")) {
+        try {
+            return JSON.parse(localStorage.getItem("favorites") as string);
+        } catch {
+            localStorage.removeItem("favorites");
+            return [];
+        }
+    } else {
+        return [];
+    }
+}
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [sort, setSort] = useState<sortType>("dex");
+    const favorites: string[] = getStoredFavorites();
+    return (
+        <div className="App">
+            <h1>Pokédex</h1>
+            <div>Sort by: <select onChange={(e) => setSort(e.target.value as sortType)}>
+                <option value="dex" selected={sort === "dex"}>PokeDex #</option>
+                <option value="alpha" selected={sort === "alpha"}>Alphabetical</option>
+            </select></div>
+            <Pokedex sort={sort} favorites={favorites} />
+        </div>
+    );
 }
 
 export default App;

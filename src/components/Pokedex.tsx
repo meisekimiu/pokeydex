@@ -35,6 +35,9 @@ const Pokedex = styled((props: PokedexProps) => {
             });
         });
     }, []);
+    useEffect(() => {
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+    }, [favorites]);
     const dex = pokemon.results.sort(sortMethods[sort]).map(poke => <Pokemon data={poke} key={poke.url} favorite={favorites.includes(poke.name)} onFavorite={(fave) => {
         if (!fave) {
             setFavorites(favorites.concat(poke.name));
