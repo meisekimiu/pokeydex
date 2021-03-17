@@ -9,12 +9,33 @@ type PokeProps = {
 }
 
 function capitalize(string: string): string {
+    return string.split(" ").map(capitalizeWord).join(" ");
+}
+
+function capitalizeWord(string: string): string {
     if (string.length > 1) {
         return string.substr(0, 1).toLocaleUpperCase() + string.substr(1).toLocaleLowerCase();
     } else {
         return string.toLocaleUpperCase();
     }
 }
+
+// This function could be replaced with API calls for each pokemon. I just wanted to simplify as much as possible and didn't want to introduce other API calls here.
+function correctPokemonName(name: string): string {
+    const correctedPokemonNames = {
+        "nidoran-m": "Nidoran♂",
+        "nidoran-f": "Nidoran♀",
+        "farfetchd": "Farfetch'd",
+        "mr-mime": "Mr. Mime",
+    }
+    for (const replace in correctedPokemonNames) {
+        if (name === replace) {
+            return correctedPokemonNames[replace as keyof typeof correctedPokemonNames]; // bruh
+        }
+    }
+    return name;
+}
+
 
 const faveAnim = keyframes`
 from {transform: rotate(0deg)}
@@ -25,10 +46,11 @@ const Pokemon = styled(({data, onFavorite, favorite, className}: PokeProps) => {
     const dexNumber = getDexNo(data);
     const title = favorite ? "Unfavorite this Pokemon" : "Favorite this Pokemon";
     const imageUrl = `https://pokeres.bastionbot.org/images/pokemon/${dexNumber}.png`;
+    const name = capitalize(correctPokemonName(data.name));
     return <div className={`pokemon ${className}`} role="listitem">
         <span className="pokemon--dexno">#{dexNumber}</span>
-        <img className="pokemon--image" src={imageUrl} alt={capitalize(data.name)} />
-        <span className="pokemon--name">{capitalize(data.name)}</span>
+        <img className="pokemon--image" src={imageUrl} alt={name} />
+        <span className="pokemon--name">{name}</span>
         <span className="pokemon--favorite"><button className={favorite ? "set-unfavorite" : "set-favorite"} onClick={() => onFavorite(favorite)} title={title}>{favorite ? "★" : "☆"}</button></span>
     </div>
 })`

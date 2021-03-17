@@ -1,7 +1,7 @@
 import { act, render, screen, RenderResult } from '@testing-library/react';
 import Pokemon from './Pokemon';
 
-import OddishData from "./mockdata/oddish.json";
+import {SimplePokemon} from "../types/simplepokemon";
 
 describe('Pokemon component', () => {
     const oddish = {
@@ -49,6 +49,42 @@ describe('Pokemon component', () => {
     it('should include a picture', () => {
         const image = screen.getByAltText("Oddish") as HTMLImageElement;
         expect(image.src).toMatch("43.png");
-
     });
+    describe('corrected names', () => {
+        function renderPokemon(pokemon: SimplePokemon) {
+            render(<Pokemon data={pokemon} onFavorite={() => {}} favorite={false} />);
+        }
+        test('Nidoran Male', () => {
+            const pokemon = {
+                name: "nidoran-m",
+                url: ""
+            };
+            renderPokemon(pokemon);
+            expect(screen.queryByText(/nidoran-m/i)).toBeNull();
+        });
+        test('Nidoran Female', () => {
+            const pokemon = {
+                name: "nidoran-f",
+                url: ""
+            };
+            renderPokemon(pokemon);
+            expect(screen.queryByText(/nidoran-f/i)).toBeNull();
+        });
+        test('Farfetch\'d', () => {
+            const pokemon = {
+                name: "farfetchd",
+                url: ""
+            };
+            renderPokemon(pokemon);
+            expect(screen.queryByText(/farfetchd/i)).toBeNull();
+        });
+        test('Mr. Mime', () => {
+            const pokemon = {
+                name: "mr-mime",
+                url: ""
+            };
+            renderPokemon(pokemon);
+            expect(screen.queryByText(/mr-mime/i)).toBeNull();
+        });
+    })
 })
