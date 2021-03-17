@@ -1,6 +1,4 @@
 import React, {useState} from 'react';
-import './App.css';
-
 import Pokedex from "./components/Pokedex";
 
 type sortType = "dex" | "alpha";
@@ -24,9 +22,9 @@ function App() {
     return (
         <div className="App">
             <h1>Pokédex</h1>
-            <div>Sort by: <select onChange={(e) => setSort(e.target.value as sortType)}>
-                <option value="dex" selected={sort === "dex"}>PokéDex #</option>
-                <option value="alpha" selected={sort === "alpha"}>Alphabetical</option>
+            <div>Sort by: <select onChange={(e) => setSort(e.target.value as sortType)} value={sort}>
+                <option value="dex">PokéDex #</option>
+                <option value="alpha">Alphabetical</option>
             </select></div>
             <Pokedex sort={sort} favorites={favorites} />
         </div>

@@ -59,6 +59,8 @@ const Pokedex = styled((props: PokedexProps) => {
 display: flex;
 flex-wrap: wrap;
 flex-direction: row;
+align-items: center;
+justify-content: center;
 padding: 2vh 10vw;
 `;
 
