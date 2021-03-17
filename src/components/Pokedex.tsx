@@ -26,13 +26,18 @@ const Pokedex = styled((props: PokedexProps) => {
         results: []
     });
     const [favorites, setFavorites] = useState<string[]>(props.favorites ?? []);
+    const [error, setError] = useState<boolean>(false);
     const sort = props.sort ?? "dex";
     useEffect(() => {
         fetch("https://pokeapi.co/api/v2/pokemon?limit=151").then((results) => {
             results.json().then((data) => {
                 const dex = data as PokedexResults;
                 setPokemon(dex);
+            }).catch(() => {
+                setError(true);
             });
+        }).catch(() => {
+            setError(true);
         });
     }, []);
     useEffect(() => {
@@ -45,8 +50,10 @@ const Pokedex = styled((props: PokedexProps) => {
             setFavorites(favorites.filter(mon => mon !== poke.name));
         }
     }} />);
+    const errorMsg = error ? <span className="error">There was an error fetching Pokemon data. Please try again.</span> : null;
     return (<div className={`pokedex ${props.className}`} role="list">
         {dex}
+        {errorMsg}
     </div>);
 })`
 display: flex;

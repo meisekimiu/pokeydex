@@ -58,4 +58,22 @@ describe('Pokedex component', () => {
         });
         expect(pokemons[0].querySelector("button")?.title).toMatch(/unfavorite/i);
     });
+    it('shows an error if pokemon cannot load', async () => {
+        fetchMock.mockReject();
+        await act(async () => {
+            render(<Pokedex sort="dex" favorites={[]} />);
+        });
+        expect(await screen.findByText(/error/i)).toBeInTheDocument();
+    });
+    it('shows an error if pokemon data is otherwise malformed', async () => {
+        fetchMock.mockOnce(() => {
+            return new Promise(resolve => {
+                resolve("this is not JSON...");
+            });
+        });
+        await act(async () => {
+            render(<Pokedex sort="dex" favorites={[]} />);
+        });
+        expect(await screen.findByText(/error/i)).toBeInTheDocument();
+    });
 });
