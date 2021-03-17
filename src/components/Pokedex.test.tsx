@@ -40,4 +40,22 @@ describe('Pokedex component', () => {
         const pokemons = await screen.findAllByRole("listitem");
         expect(pokemons[0].textContent).toMatch(/gloom/i);
     });
+    it('gets a list of favorites', async () => {
+        await act(async () => {
+            render(<Pokedex sort="dex" favorites={["oddish"]} />);
+        });
+        const pokemons = await screen.findAllByRole("listitem");
+        expect(pokemons[0].querySelector("button")?.title).toMatch(/unfavorite/i);
+    });
+    it('can have favorites added to', async () => {
+        await act(async () => {
+            render(<Pokedex sort="dex" favorites={[]} />);
+        });
+        const pokemons = await screen.findAllByRole("listitem");
+        expect(pokemons[0].querySelector("button")?.title).not.toMatch(/unfavorite/i);
+        act(() => {
+            pokemons[0].querySelector("button")?.click();
+        });
+        expect(pokemons[0].querySelector("button")?.title).toMatch(/unfavorite/i);
+    });
 });

@@ -1,11 +1,12 @@
 import {useState, useEffect} from "react";
-import type {SimplePokemon} from "../types/simplepokemon";
+import {SimplePokemon, getDexNo} from "../types/simplepokemon";
 import type {PokedexResults} from "../types/pokedexresults";
 
 import Pokemon from "./Pokemon";
 
 type PokedexProps = {
     sort?: "alpha"|"dex";
+    favorites: string[];
 }
 
 const sortMethods = {
@@ -13,9 +14,7 @@ const sortMethods = {
         return a.name.localeCompare(b.name);
     },
     dex: (a: SimplePokemon, b: SimplePokemon) => {
-        const aNum = parseInt(a.url.split("/").filter(x => x.length > 0).pop() + "");
-        const bNum = parseInt(b.url.split("/").filter(x => x.length > 0).pop() + "");
-        return aNum - bNum;
+        return getDexNo(a) - getDexNo(b);
     }
 }
 
@@ -24,6 +23,7 @@ export default function Pokedex(props: PokedexProps) {
         count: 0,
         results: []
     });
+    const [favorites, setFavorites] = useState<string[]>(props.favorites ?? []);
     const sort = props.sort ?? "dex";
     useEffect(() => {
         fetch("https://pokeapi.co/api/v2/pokemon?limit=151").then((results) => {
@@ -33,7 +33,13 @@ export default function Pokedex(props: PokedexProps) {
             });
         });
     }, []);
-    const dex = pokemon.results.sort(sortMethods[sort]).map(poke => <Pokemon data={poke} key={poke.url} />);
+    const dex = pokemon.results.sort(sortMethods[sort]).map(poke => <Pokemon data={poke} key={poke.url} favorite={favorites.includes(poke.name)} onFavorite={(fave) => {
+        if (!fave) {
+            setFavorites(favorites.concat(poke.name));
+        } else {
+            setFavorites(favorites.filter(mon => mon !== poke.name));
+        }
+    }} />);
     return (<div className="pokedex" role="list">
         {dex}
     </div>);
