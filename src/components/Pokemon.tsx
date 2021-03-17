@@ -14,7 +14,7 @@ function capitalize(string: string): string {
 
 export default function Pokemon({data}: PokeProps) {
     const dexNumber = data.url.split("/").filter(a => a.length > 0).pop();
-    return <div className="pokemon">
+    return <div className="pokemon" role="listitem">
         <span className="pokemon--dexno">#{dexNumber}</span>
         <span className="pokemon--name">{capitalize(data.name)}</span>
     </div>

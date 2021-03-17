@@ -31,6 +31,13 @@ describe('Pokedex component', () => {
         await act(async () => {
             render(<Pokedex />);
         });
-        expect(await screen.findByText(/oddish/i)).toBeInTheDocument();
+        expect(await screen.findAllByRole("listitem")).toHaveLength(3);
+    });
+    it('can be set to sort by alphabetical order', async () => {
+        await act(async () => {
+            render(<Pokedex sort="alpha" />);
+        });
+        const pokemons = await screen.findAllByRole("listitem");
+        expect(pokemons[0].textContent).toMatch(/gloom/i);
     });
 });
